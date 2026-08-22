@@ -1,0 +1,1 @@
+alter table usuarios add COLUMN perfil varchar(20) default 'USER';
