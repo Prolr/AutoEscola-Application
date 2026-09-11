@@ -1,10 +1,9 @@
 package br.com.senai.autoescolas164.application.core.domain;
 
-import br.com.senai.autoescolas164.adapter.in.controller.request.instrutor.DadosAtualizacaoInstrutor;
-import br.com.senai.autoescolas164.adapter.in.controller.request.instrutor.DadosCadastroInstrutor;
+
 import br.com.senai.autoescolas164.shared.vo.enumeration.Especialidade;
 import br.com.senai.autoescolas164.shared.vo.endereco.Endereco;
-import jakarta.persistence.*;
+
 
 public class Instrutor {
     private Long id;

@@ -6,17 +6,28 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "alunos")
+@Table(name = "instrucoes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
-public class AlunoEntity {
+public class InstrucaoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // coloque aqui os demais campos do aluno
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aluno_id")
+    private AlunoEntity aluno;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "instrutor_id")
+    private InstrutorEntity instrutor;
+
+    @Column(name = "data_hora")
+    private LocalDateTime dataHora;
 }
