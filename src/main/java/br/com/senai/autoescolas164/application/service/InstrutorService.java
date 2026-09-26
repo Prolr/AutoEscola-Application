@@ -10,9 +10,11 @@ import br.com.senai.autoescolas164.application.core.domain.Instrutor;
 import br.com.senai.autoescolas164.application.port.out.InstrutorRepository;
 import br.com.senai.autoescolas164.shared.vo.endereco.mapper.EnderecoMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,15 +46,18 @@ public class InstrutorService {
                 .map(mapper::toListDto);
     }
 
+    @Cacheable(value = "instrutores", key = "#id")
     @Transactional(readOnly = true)
+
     public @Nullable DadosDetalhamentoInstrutor detalharInstrutor(Long id) {
         log.info("Consultando os dados de instrutor no banco de dados...");
         Instrutor instrutor = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ID do instrutor informado não existe!"));
         return mapper.toDetailDto(instrutor);
     }
-
+    @CachePut(value = "instrutores", key = "#dados.id()")
     @Transactional
+
     public @Nullable DadosDetalhamentoInstrutor atualizarInstrutor(DadosAtualizacaoInstrutor dados) {
         Instrutor instrutor = repository.findById(dados.id())
                 .orElseThrow(() -> new RuntimeException("ID do instrutor informado não existe!"));
@@ -67,7 +72,9 @@ public class InstrutorService {
         return mapper.toDetailDto(salvo);
     }
 
+    @CacheEvict(value = "instrutores", key = "#id")
     @Transactional
+
     public void excluirInstrutor(Long id) {
         Instrutor instrutor = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ID do instrutor informado não existe!"));
