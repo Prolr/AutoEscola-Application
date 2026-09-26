@@ -10,10 +10,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-@
+@Slf4j
 @RestControllerAdvice
 public class TratadorGlobalErros {
 
@@ -26,7 +26,11 @@ public class TratadorGlobalErros {
     public ResponseEntity<List<DadosBadRequest>> tratarBadRequest(
             MethodArgumentNotValidException e) {
         log.warn(
-                "Erro"
+                "Erro de validação. Campos inválidos: {}", e
+                        .getFieldErrors()
+                        .stream()
+                        .map(FieldError::getField)
+                        .toList()
         );
         List<FieldError> erros = e.getFieldErrors();
         return ResponseEntity
@@ -61,6 +65,7 @@ public class TratadorGlobalErros {
 
     @ExceptionHandler(Exception.class) // Exceção está se sobrepondo ao build
     public ResponseEntity<DadosException> tratarErroGenerico(Exception e) {
+        log.error("Erro inesperado");
         return ResponseEntity
                 .internalServerError()
                 .body(new DadosException(e.getMessage()));
