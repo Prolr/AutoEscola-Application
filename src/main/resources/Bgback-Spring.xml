@@ -1,0 +1,22 @@
+<configuration>
+
+    <!-- Definicao do padrao de log -->
+    <property name="LOG_PATTERN" value="%d{dd/MM/yyyy - HH:mm} %-5level [%thread] %logger{36}:%line - %msg%n"/>
+
+    <!-- Appender para o Console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Niveis de Log por Pacote -->
+    <logger name="br.com.senai.autoescolas164.application.service" level="DEBUG"/>
+    <logger name="org.springframework" level="INFO"/>
+
+    <!-- Configuraçao Root -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

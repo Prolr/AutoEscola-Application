@@ -11,8 +11,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
 
+import java.util.List;
+@
 @RestControllerAdvice
 public class TratadorGlobalErros {
 
@@ -24,6 +25,9 @@ public class TratadorGlobalErros {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<DadosBadRequest>> tratarBadRequest(
             MethodArgumentNotValidException e) {
+        log.warn(
+                "Erro"
+        );
         List<FieldError> erros = e.getFieldErrors();
         return ResponseEntity
                 .badRequest()

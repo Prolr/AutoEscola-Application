@@ -12,10 +12,13 @@ import br.com.senai.autoescolas164.application.port.out.InstrutorRepository;
 import br.com.senai.autoescolas164.exception.type.AlunoNotFoundException;
 import br.com.senai.autoescolas164.exception.type.InstrutorNotFoundException;
 import br.com.senai.autoescolas164.exception.type.ValidacaoException;
+import jdk.internal.org.jline.utils.Log;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +27,15 @@ public class AgendaDeInstrucoes {
     private final AlunoRepository alunoRepository;
     private final InstrutorRepository instrutorRepository;
     private final List<ValidadorAgendamento> validadoresAgendamento;
+    private static final Logger log = (Logger) LoggerFactory.getLogger(InstrutorService.class);
 
     public DadosDetalhamentoAgendamento agendar(DadosAgendamento dados) {
         if (!alunoRepository.existsById(dados.idAluno())) {
+
+            log.war(
+                    "Tentativa de agendamento para aluno inexistente. Aluno{}",
+                    dados.idAluno()
+            );
             throw new AlunoNotFoundException("ID do aluno informado não existe!");
         }
         if (dados.idInstrutor() != null && !instrutorRepository.existsById(dados.idInstrutor())) {
